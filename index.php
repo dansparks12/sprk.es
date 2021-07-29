@@ -19,7 +19,7 @@ if (isset($_GET['url'])) {
     if (strpos($_GET['url'], "swtest.ru") !== false) {
     
     }
-    require_once('url_list.php');
+    require_once('');
     if (isset($list[$_GET['url']])) {
         $link = $list[$_GET['url']];
         header('location:'.$link);
@@ -29,7 +29,7 @@ if (isset($_GET['url'])) {
 } elseif (isset($_POST['url'])) {
     $check = short_url($_POST['url']);
     if ($check) {
-        $msg = " <br /><h3> Your shortened URL: </h3> <p><a href=\"{$baseurl}{$check}\" target=\"_blank\">{$baseurl}{$check} </a></p>";
+        $msg = " <br /><h3> This service is currently unavailable. </h3>";
     } else {
         $msg = "<p class=\"error\">Invalid Url</p>";
     }
