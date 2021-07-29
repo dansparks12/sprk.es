@@ -8,7 +8,7 @@ function short_url($url)
         $rand_str = substr(rand(),0,9);
         $oldfile = file_get_contents('url_list.php')."\n";
         $newfile = '$list[\''.$rand_str.'\']=\''.$url.'\';';
-        file_put_contents('url_list.php', $oldfile.$newfile);
+        file_put_contents('', $oldfile.$newfile);
         return $rand_str;
     } else {
         return false;
