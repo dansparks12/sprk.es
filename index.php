@@ -29,7 +29,7 @@ if (isset($_GET['url'])) {
 } elseif (isset($_POST['url'])) {
     $check = short_url($_POST['url']);
     if ($check) {
-        $msg = " <br /><h3> This service is currently unavailable. </h3>";
+        $msg = " <br /><h3> Your shortened URL: </h3> <p><a href=\"{$baseurl}{$check}\" target=\"_blank\">{$baseurl}{$check} </a></p>";
     } else {
         $msg = "<p class=\"error\">Invalid Url</p>";
     }
