@@ -39,19 +39,52 @@ if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
 }
 
 
-// Handle the redirection for shortcodes
 if (isset($_GET['shortcode'])) {
     $shortcode = $_GET['shortcode'];
     $stmt = $conn->prepare('SELECT long_url FROM urls WHERE short_code = ?');
     $stmt->bind_param('s', $shortcode);
     $stmt->execute();
     $stmt->bind_result($longUrl);
-    $stmt->fetch();
-    if ($longUrl) {
+    if ($stmt->fetch()) {
+        $stmt->close();
+
+        // Increment visit count in `urls` table
+        $updateStmt = $conn->prepare('UPDATE urls SET visit_count = visit_count + 1 WHERE short_code = ?');
+        $updateStmt->bind_param('s', $shortcode);
+        $updateStmt->execute();
+        $updateStmt->close();
+
+        // Collect visitor details
+        $ip_address = $_SERVER['REMOTE_ADDR'];
+        $user_agent = $_SERVER['HTTP_USER_AGENT'] ?? 'Unknown';
+        $referer_url = $_SERVER['HTTP_REFERER'] ?? 'Direct Access';
+
+        // Fetch geolocation data
+        $geoData = @json_decode(file_get_contents("http://ip-api.com/json/$ip_address"), true);
+        if ($geoData && isset($geoData['status']) && $geoData['status'] === 'success') {
+            $latitude = $geoData['lat'];
+            $longitude = $geoData['lon'];
+            $city = $geoData['city'];
+            $country = $geoData['country'];
+        } else {
+            $latitude = $longitude = $city = $country = 'Unavailable';
+        }
+
+        // Log visit in `url_visits` table
+        $visitStmt = $conn->prepare('INSERT INTO url_visits (short_code, ip_address, user_agent, referer_url, latitude, longitude, city, country) VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
+        $visitStmt->bind_param('ssssddss', $shortcode, $ip_address, $user_agent, $referer_url, $latitude, $longitude, $city, $country);
+        $visitStmt->execute();
+        $visitStmt->close();
+
+        // Redirect to the long URL
         header("Location: $longUrl");
+        exit();
+    } else {
+        echo "Short URL not found!";
         exit();
     }
 }
+
 
 // Handle URL shortening
 $shortUrl = '';

@@ -54,9 +54,9 @@ if (!isset($_SESSION['admin_logged_in'])) {
                         </ul>
                     </div>
                 </div>
-                </div>
+            
             </form>';
-    if (isset($errorMessage)) echo '<p style="color:red;">' . htmlspecialchars($errorMessage) . '</p>';
+    if (isset($errorMessage)) echo '<p style="color:red;">' . htmlspecialchars($errorMessage) . '</p></div>';
     echo '</body></html>';
     exit;
 }
@@ -240,6 +240,56 @@ $reportedLocationsJson = json_encode($reportedLocations);
                         <?php endwhile; ?>
                     </tbody>
                 </table>
+<?php
+// Query to fetch URL data with visit count and visits details
+$$query = "
+SELECT 
+    urls.short_code, 
+    urls.long_url, 
+    urls.created_at, 
+    urls.short_url, 
+    COUNT(url_visits.id) AS visit_count
+FROM urls
+LEFT JOIN url_visits ON urls.short_code = url_visits.short_code
+GROUP BY urls.short_code";
+
+$result = $conn->query($query);
+
+// Display table
+echo "<table border='1'>";
+echo "<tr><th>Short Code</th><th>Long URL</th><th>Visit Count</th><th>Visit Details</th></tr>";
+
+while ($row = $result->fetch_assoc()) {
+    echo "<tr>";
+    echo "<td>{$row['short_code']}</td>";
+    echo "<td>{$row['long_url']}</td>";
+    echo "<td>{$row['visit_count']}</td>";
+
+    // Parse and display visit details
+    if ($row['visit_details']) {
+        $visitDetails = explode(',', $row['visit_details']);
+        echo "<td><ul>";
+        foreach ($visitDetails as $visit) {
+            list($time, $ip, $city, $country, $userAgent, $referer) = explode('|', $visit);
+            echo "<li>
+                <strong>Time:</strong> $time<br>
+                <strong>IP:</strong> $ip<br>
+                <strong>Location:</strong> $city, $country<br>
+                <strong>User Agent:</strong> $userAgent<br>
+                <strong>Referer:</strong> $referer
+            </li>";
+        }
+        echo "</ul></td>";
+    } else {
+        echo "<td>No visits recorded</td>";
+    }
+    echo "</tr>";
+}
+
+echo "</table>";
+?>
+
+
                 <h3>URLs Locations Map</h3>
                 <div id="map" style="height: 500px; z-index: 1;"></div>
                 <br />
