@@ -38,6 +38,7 @@ if (!isset($_SESSION['admin_logged_in'])) {
     </head>
     <body>
         <section id="login">
+        <div class="container">
             <h2>Admin Login</h2>
             <form method="POST">
                 <div class="row gtr-uniform gtr-50">
@@ -52,6 +53,7 @@ if (!isset($_SESSION['admin_logged_in'])) {
                             <li><input type="submit" name="login" value="Login" class="primary" /></li>
                         </ul>
                     </div>
+                </div>
                 </div>
             </form>';
     if (isset($errorMessage)) echo '<p style="color:red;">' . htmlspecialchars($errorMessage) . '</p>';
