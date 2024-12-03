@@ -235,6 +235,7 @@ if(isset($_SESSION['reported'])) {
     <div id="main" class="wrapper style1">
         <div class="container">
             <section>
+                <div id="shorten"></div>
                 <h3> URL Shortener </h3>
                 <form method="post" action="#">
                     <div class="row gtr-uniform gtr-50">
