@@ -240,6 +240,8 @@ $reportedLocationsJson = json_encode($reportedLocations);
                         <?php endwhile; ?>
                     </tbody>
                 </table>
+                <br />
+                <br />
 <?php
 // Query to fetch URL data with visit count and visits details
 $query = "

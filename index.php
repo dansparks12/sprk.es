@@ -61,7 +61,7 @@ if (isset($_GET['shortcode'])) {
 
         // Log visit in `url_visits` table
         $visitStmt = $conn->prepare('INSERT INTO url_visits (short_code, visited_at, ip_address, user_agent, referrer) VALUES (?, NOW(), ?, ?, ?)');
-        $visitStmt->bind_param('sss', $shortcode, $ip_address, $user_agent, $referrer);
+        $visitStmt->bind_param('ssss', $shortcode, $ip_address, $user_agent, $referrer);
         $visitStmt->execute();
 
         // Redirect to the long URL
