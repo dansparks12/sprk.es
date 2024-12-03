@@ -242,6 +242,7 @@ $reportedLocationsJson = json_encode($reportedLocations);
                 </table>
                 <br />
                 <br />
+                <h3>Visitor counts</h3>
 <?php
 // Query to fetch URL data with visit count and visits details
 $query = "
