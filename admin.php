@@ -241,7 +241,6 @@ $reportedLocationsJson = json_encode($reportedLocations);
                     </tbody>
                 </table>
                 <br />
-                <br />
                 <h3>Visitor counts</h3>
 <?php
 // Query to fetch URL data with visit count and visits details
@@ -260,14 +259,14 @@ $result = $conn->query($query);
 
 // Display table
 echo "<table>";
+echo "<thead>";
 echo "<tr><th>Short Code</th><th>Long URL</th><th>Visit Count</th></tr>";
-
+echo "</thead>";
 while ($row = $result->fetch_assoc()) {
-    echo "<tr>";
+
     echo "<td>{$row['short_code']}</td>";
     echo "<td>{$row['long_url']}</td>";
     echo "<td>{$row['visit_count']}</td>";
-    echo "</tr>";
 }
 echo "</table>";
 ?>
