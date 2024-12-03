@@ -259,36 +259,16 @@ GROUP BY urls.short_code";
 $result = $conn->query($query);
 
 // Display table
-echo "<table border='1'>";
-echo "<tr><th>Short Code</th><th>Long URL</th><th>Visit Count</th><th>Visit Details</th></tr>";
+echo "<table>";
+echo "<tr><th>Short Code</th><th>Long URL</th><th>Visit Count</th></tr>";
 
 while ($row = $result->fetch_assoc()) {
     echo "<tr>";
     echo "<td>{$row['short_code']}</td>";
     echo "<td>{$row['long_url']}</td>";
     echo "<td>{$row['visit_count']}</td>";
-
-    // Parse and display visit details
-    if ($row['visit_details']) {
-        $visitDetails = explode(',', $row['visit_details']);
-        echo "<td><ul>";
-        foreach ($visitDetails as $visit) {
-            list($time, $ip, $city, $country, $userAgent, $referer) = explode('|', $visit);
-            echo "<li>
-                <strong>Time:</strong> $time<br>
-                <strong>IP:</strong> $ip<br>
-                <strong>Location:</strong> $city, $country<br>
-                <strong>User Agent:</strong> $userAgent<br>
-                <strong>Referer:</strong> $referer
-            </li>";
-        }
-        echo "</ul></td>";
-    } else {
-        echo "<td>No visits recorded</td>";
-    }
     echo "</tr>";
 }
-
 echo "</table>";
 ?>
 
