@@ -253,7 +253,7 @@ SELECT
     COUNT(url_visits.id) AS visit_count
 FROM urls
 LEFT JOIN url_visits ON urls.short_code = url_visits.short_code
-GROUP BY urls.short_code";
+GROUP BY urls.short_code ORDER BY visit_count ASC";
 
 $result = $conn->query($query);
 
