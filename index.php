@@ -79,11 +79,10 @@ if (isset($_GET['shortcode'])) {
         // Redirect to the long URL
         header("Location: $longUrl");
         exit();
-    } else {
-        echo "Short URL not found!";
+    } else {}
         exit();
     }
-}
+
 
 
 // Handle URL shortening
