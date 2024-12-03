@@ -263,10 +263,11 @@ echo "<thead>";
 echo "<tr><th>Short Code</th><th>Long URL</th><th>Visit Count</th></tr>";
 echo "</thead>";
 while ($row = $result->fetch_assoc()) {
-
+    echo "<tr>";
     echo "<td>{$row['short_code']}</td>";
     echo "<td>{$row['long_url']}</td>";
     echo "<td>{$row['visit_count']}</td>";
+    echo "</tr>";
 }
 echo "</table>";
 ?>
