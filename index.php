@@ -52,36 +52,24 @@ if (isset($_GET['shortcode'])) {
         $updateStmt = $conn->prepare('UPDATE urls SET visit_count = visit_count + 1 WHERE short_code = ?');
         $updateStmt->bind_param('s', $shortcode);
         $updateStmt->execute();
-        $updateStmt->close();
 
         // Collect visitor details
         $ip_address = $_SERVER['REMOTE_ADDR'];
         $user_agent = $_SERVER['HTTP_USER_AGENT'] ?? 'Unknown';
         $referer_url = $_SERVER['HTTP_REFERER'] ?? 'Direct Access';
 
-        // Fetch geolocation data
-        $geoData = @json_decode(file_get_contents("http://ip-api.com/json/$ip_address"), true);
-        if ($geoData && isset($geoData['status']) && $geoData['status'] === 'success') {
-            $latitude = $geoData['lat'];
-            $longitude = $geoData['lon'];
-            $city = $geoData['city'];
-            $country = $geoData['country'];
-        } else {
-            $latitude = $longitude = $city = $country = 'Unavailable';
-        }
 
         // Log visit in `url_visits` table
-        $visitStmt = $conn->prepare('INSERT INTO url_visits (short_code, ip_address, user_agent, referer_url, latitude, longitude, city, country) VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
-        $visitStmt->bind_param('ssssddss', $shortcode, $ip_address, $user_agent, $referer_url, $latitude, $longitude, $city, $country);
+        $visitStmt = $conn->prepare('INSERT INTO url_visits (short_code, visited_at, ip_address, user_agent, referrer) VALUES (?, NOW(), ?, ?, ?)');
+        $visitStmt->bind_param('sss', $shortcode, $ip_address, $user_agent, $referrer);
         $visitStmt->execute();
-        $visitStmt->close();
 
         // Redirect to the long URL
         header("Location: $longUrl");
         exit();
-    } else {}
-        exit();
     }
+    }
+
 
 
 

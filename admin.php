@@ -242,7 +242,7 @@ $reportedLocationsJson = json_encode($reportedLocations);
                 </table>
 <?php
 // Query to fetch URL data with visit count and visits details
-$$query = "
+$query = "
 SELECT 
     urls.short_code, 
     urls.long_url, 
