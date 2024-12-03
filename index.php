@@ -249,7 +249,7 @@ if(isset($_SESSION['reported'])) {
                         <div class="short-url-result">
                             <?php if (!empty($shortUrl)): ?>
                                 <p>Your shortened URL is: <a href="<?php echo $shortUrl; ?>"><?php echo $shortUrl; ?></a> shortened from <a href="<?php echo $longUrl; ?>"><?php echo $longUrl; ?></a>.</p>
-                                <?php else if(!empty($message2)): ?> 
+                                <?php elseif(!empty($message2)): ?> 
                                     <p><?php echo $message2; ?></p>
                                 <?php endif; ?>
                         </div>
